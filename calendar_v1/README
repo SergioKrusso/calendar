@@ -1,0 +1,64 @@
+Запускаем программу в PyCharm, открываем терминал, тестим
+
+## cURL тестирование
+
+### добавление нового события
+```
+curl http://127.0.0.1:5000/api/v1/calendar/event/ -X POST -d "1|2023-09-20|title|text"
+```
+
+### получение всего списка событий
+```
+curl http://127.0.0.1:5000/api/v1/calendar/event/
+```
+
+### получение события по идентификатору / ID == 1
+```
+curl http://127.0.0.1:5000/api/v1/calendar/event/1/
+```
+
+### обновление текста события по идентификатору / ID == 1 /  новый текст == "new text"
+```
+curl http://127.0.0.1:5000/api/v1/calendar/event/1/ -X PUT -d "1|2023-09-20|title|new text"
+```
+
+### удаление события по идентификатору / ID == 1
+```
+curl http://127.0.0.1:5000/api/v1/calendar/event/1/ -X DELETE
+```
+
+
+## пример исполнения команд с выводом
+
+```
+curl http://127.0.0.1:5000/api/v1/calendar/event/ -X POST -d "1|2023-09-20|title|text"
+new id: 1
+
+curl http://127.0.0.1:5000/api/v1/calendar/event/
+1|2023-09-20 00:00:00|title|text
+
+curl http://127.0.0.1:5000/api/v1/calendar/event/1/
+1|2023-09-20 00:00:00|title|text
+
+curl http://127.0.0.1:5000/api/v1/calendar/event/1/ -X PUT -d "1|2023-09-20|title|new text"
+updated
+
+curl http://127.0.0.1:5000/api/v1/calendar/event/1/
+1|2023-09-20 00:00:00|title|new text
+
+
+curl http://127.0.0.1:5000/api/v1/calendar/event/1/ -X PUT -d "1|2023-09-20|titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeee|new text"
+failed to UPDATE with: title length > MAX: 30
+
+curl http://127.0.0.1:5000/api/v1/calendar/event/1/ -X PUT -d "1|2023-09-20|title|newwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww text"
+failed to UPDATE with: title lenght > MAX: 200
+
+
+curl http://127.0.0.1:5000/api/v1/calendar/event/1/ -X DELETE
+failed to DELETE with: failed DELETE operation with: failed DELETE operation with: 1 not found in storage
+
+## пробуем положить два события на одну и ту же дату
+curl http://127.0.0.1:5000/api/v1/calendar/event/ -X POST -d "1|2023-09-20|title|text"
+new id: 1
+curl http://127.0.0.1:5000/api/v1/calendar/event/ -X POST -d "1|2023-09-20|title|text"
+failed to CREATE with: An event already exists for date 2023-09-20
