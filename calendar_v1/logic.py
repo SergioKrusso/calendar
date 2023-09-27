@@ -26,17 +26,7 @@ class EventLogic:
         if event.text is None or len(event.text) > TEXT_LIMIT:
             raise LogicException(f"text length > MAX: {TEXT_LIMIT}")
 
-#        event_date = event.date.date()
-#        if event_date in EventLogic.events_by_date:
-#            raise LogicException(f"An event already exists for date {event_date}")
 
-    #def create(self, event: model.Event) -> str:
-    #    self._validate_event(event)
-    #    try:
-    #        return self._event_db.create(event)
-    #    except Exception as ex:
-    #        raise LogicException(f"failed CREATE operation with: {ex}")
-# не работает, пробуем апдейтить events_by_date:
     def create(self, event: model.Event) -> str:
         self._validate_event(event)
         event_date = event.date.date()
